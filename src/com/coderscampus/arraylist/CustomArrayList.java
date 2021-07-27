@@ -8,35 +8,22 @@ public class CustomArrayList<T> implements CustomList<T> {
 
     Object[] items = new Object[10];
 
+    /**
+     * Counts the number of elements inserted into the array;
+     */
+    int index = 0;
+
+    /**
+     *
+     * @param item the item to be added to the <code>CustomList</code>
+     * @return
+     */
     @Override
     public boolean add(T item) {
-
-        boolean arayIsFull = checkIsFull();
-
-        if (arayIsFull) {
-            System.out.println("ARRAY IS FULL SO I AM EXTENDING IT");
-            extendArray();
+        if ( index >= items.length ){
+            this.extendArray();
         }
-        AtomicInteger index = new AtomicInteger();
-        // Find the position of the first null value in the array
-        // and assign the new item in to that position
-        Arrays.stream(items)
-                .takeWhile(element -> {
-                    final int i = index.incrementAndGet();
-                    if ( element == null ){
-                        items[i] = item;
-                        return true;
-                    }
-                    return false;
-                });
-
-
-//        for ( int i = 0; i < items.length; i++ ) {
-//            if ( items[i] == null ) {
-//                items[i] = item;
-//                break;
-//            }
-//        }
+        items[index++] = item;
         return true;
     }
 
@@ -50,6 +37,12 @@ public class CustomArrayList<T> implements CustomList<T> {
         return  (int) Arrays.stream(items).filter((item) -> item != null).count();
     }
 
+    /**
+     *
+     * @param index represents the position in the backing <code>Object</code> array that we want to access
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
     @Override
     public T get(int index) throws IndexOutOfBoundsException{
         if ( index > getSize() )
@@ -58,42 +51,10 @@ public class CustomArrayList<T> implements CustomList<T> {
     }
 
     /**
-     * Checks wheter the array is full
-     * The array considered to be empty until
-     * at least a null value is stored in it
-     * @return
-     */
-    private boolean checkIsFull(){
-       return Arrays.stream(items)
-                .allMatch(item->item != null);
-//                .takeWhile(item -> item != null);
-
-//        for (int i = 0; i < items.length; i++) {
-//
-//            //if null value is found the array is not full
-//            if ( items[i] == null ){
-//                return false;
-//            }
-//        }
-//        return true;
-    }
-
-    /**
      * extends (doubles) the size of the backing array if the current size is not enough
      */
     private void extendArray(){
-        Object[] temp = Arrays.copyOf(this.items,items.length*2);
-        this.items = temp;
+        this.items = Arrays.copyOf(this.items,items.length*2);
     }
 
-    /**
-     * ToString method is overriden for testing pourpouses
-     * @return
-     */
-    @Override
-    public String toString() {
-        return "CustomArrayList{" +
-                "items=" + Arrays.toString(items) +
-                '}';
-    }
 }
