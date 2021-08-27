@@ -10,6 +10,7 @@ public class CustomArrayList<T> implements CustomList<T> {
 
     /**
      * Counts the number of elements inserted into the array;
+     * Significat performance improvements
      */
     int index = 0;
 
