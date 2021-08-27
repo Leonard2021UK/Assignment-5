@@ -35,7 +35,8 @@ public class CustomArrayList<T> implements CustomList<T> {
 
     @Override
     public int getSize() {
-        return  (int) Arrays.stream(items).filter((item) -> item != null).count();
+//        return  (int) Arrays.stream(items).filter((item) -> item != null).count();
+        return index;
     }
 
     /**
